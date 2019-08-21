@@ -1,9 +1,6 @@
-TrashMail.net disposable email address
+Import disposable emails from SpamGourmet service.
 ======================================
-
-* Author:  Laszlo Szathmary, 2013 (<jabba.laci@gmail.com>)
-* Website: <http://ubuntuincident.wordpress.com/2013/04/13/trashmail/>
-* GitHub:  <https://github.com/jabbalaci/TrashMail.net-disposable-email-address>
+The script is based on the work of - Laszlo Szathmary, 2013 (<jabba.laci@gmail.com>), <https://github.com/jabbalaci/TrashMail.net-disposable-email-address>
 
 Creates a disposable email address on TrashMail.net (<https://ssl.trashmail.net/>).
 
@@ -15,11 +12,10 @@ Then, you must provide your credentials to this script. Either you
 hard-code it in the source (USERNAME and PASSWORD variables), or
 you provide them interactively.
 
-The script will create a disposable email address for you on TrashMail.net.
-The newly created email address will be copied to the clipboard (for this
-you must have the "xsel" command installed on your system).
+The script takes a list of disposable email address from a text file and 
+adds them for you on TrashMail.net.
 
-Tested under Linux with Python 2.7.
+Tested under Windows 10 with Python 2.7.
 
 Usage
 -----
