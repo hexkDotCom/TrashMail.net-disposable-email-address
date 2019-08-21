@@ -1,31 +1,15 @@
-#!/usr/bin/env python
-
-"""
-Create a temporary (disposable) email address on trashmail.net .
-
-I took the file https://trashmail.com/files/trashmail_sdk_1_1.tar.gz
-and converted it to Python.
-
-On https://trashmail.com/ you will have to register yourself (it's free).
-Upon registration you provide your real email address where emails from
-the disposable addresses will be redirected to. You need this registration
-to be able to create disposable email addresses on trashmail.net .
-
-Written by Laszlo Szathmary, 2013 (jabba.laci@gmail.com).
-https://github.com/jabbalaci/TrashMail.net-disposable-email-address
-"""
+# based on the work of Laszlo Szthmary
+# https://github.com/jabbalaci/TrashMail.net-disposable-email-address
 
 import re
 import json
 import requests
 
-import utils
-from clipboard import text_to_clipboards
-
-USERNAME = None
-PASSWORD = None
+USERNAME = ""
+PASSWORD = ""
+DOMAIN = ""
 #
-DEBUG = False
+DEBUG = True
 
 
 def get_session_id_and_real_email():
@@ -50,10 +34,9 @@ def get_session_id_and_real_email():
     return session_id, real_email
 
 
-def create_temp_email(session_id, real_email):
+def create_temp_email(session_id, real_email, disposable_name):
     """
     Create a new disposable email address.
-
     For this, we need to provide the session ID.
     The real email address must be given too where
     emails will be redirected to.
@@ -64,11 +47,11 @@ def create_temp_email(session_id, real_email):
             "uid": None,
             "ctime": 0,
             "ctime_text": "",
-            "disposable_name": utils.get_urandom_password(8),
-            "disposable_domain": "trashmail.com",
+            "disposable_name": disposable_name,
+            "disposable_domain": DOMAIN,
             "destination": real_email,
-            "forwards": 10,     # that's the maximum number of forwards for the free service
-            "expire": 7,        # max. value: 31 (one month)
+            "forwards": -1,      # that's the maximum number of forwards for the free service
+            "expire": -1,        # max. value: 31 (one month)
             "website": "",
             "cs": 0,
             "notify": True,
@@ -90,18 +73,23 @@ def create_temp_email(session_id, real_email):
 
 
 def main():
+    with open("import.csv", 'r') as f:
+        lines = f.readlines()
+    if DEBUG:
+        print(lines)
+        print("\n")
+
     session_id, real_email = get_session_id_and_real_email()
-    email = create_temp_email(session_id, real_email)
+    if DEBUG:
+        print(session_id)
+        print(real_email)
 
-    # Uncomment to copy email to clipboard
-    # Requires "xsel"
-
-    # text_to_clipboards(email)
-    # print '# copied to the clipboard'
-
-    print email
-
+    for l in lines:
+        line = l.strip()
+        email = create_temp_email(session_id, real_email, line)
+        print email
 #############################################################################
+
 
 if __name__ == "__main__":
     if USERNAME and PASSWORD:
